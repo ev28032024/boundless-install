@@ -98,6 +98,11 @@ sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
+#### Добавить активного пользователя в группу
+```
+sudo usermod -aG docker $USER
+```
+
 #### Проверка установленного Docker
 ```
 docker -v
@@ -134,11 +139,6 @@ export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.8-1
 ```
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
-```
-
-#### Добавить активного пользователя в группу
-```
-sudo usermod -aG docker $USER
 ```
 
 #### Проверка установленного пакета
