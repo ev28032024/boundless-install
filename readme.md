@@ -15,7 +15,7 @@ sudo reboot
 #### Установка зависимостей
 ```
 sudo apt-get update -y
-sudo apt-get install -y build-essential dkms linux-headers-$(uname -r)
+sudo apt-get install -y ubuntu-drivers-common build-essential dkms linux-headers-$(uname -r)
 ```
 
 #### Установка PPA и драйвера
@@ -136,6 +136,11 @@ sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 ```
 
+#### Добавить активного пользователя в группу
+```
+sudo usermod -aG docker $USER
+```
+
 #### Проверка установленного пакета
 ```
 nvidia-container-cli info
@@ -146,7 +151,7 @@ nvidia-container-cli info
 #### Установка зависимостей
 ```
 sudo apt update -y && sudo apt upgrade -y
-sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev tar clang bsdmainutils ncdu unzip libleveldb-dev libclang-dev ninja-build -y
+sudo apt install curl iptables build-essential git wget lz4 jq make gcc gnupg ca-certificates lsb-release nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev tar clang bsdmainutils ncdu unzip libleveldb-dev libclang-dev ninja-build nvtop -y
 ```
 
 #### Клонируем репозиторий
@@ -158,8 +163,8 @@ git checkout release-0.13
 
 #### Установить rustup
 ```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-. "$HOME/.cargo/env"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+source "$HOME/.cargo/env"
 ```
 
 #### Обновить rustup
@@ -231,9 +236,7 @@ boundless -h
 
 #### Установить Just (утилита для управления задачами)
 ```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source "$HOME/.cargo/env"
-cargo install just
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
 ```
 
 #### Проверить Just
