@@ -14,14 +14,14 @@ sudo reboot
 
 #### Установка зависимостей
 ```
-sudo apt-get update
+sudo apt-get update -y
 sudo apt-get install -y build-essential dkms linux-headers-$(uname -r)
 ```
 
 #### Установка PPA и драйвера
 ```
 sudo add-apt-repository ppa:graphics-drivers/ppa
-sudo apt update
+sudo apt update -y
 ubuntu-drivers devices // (копируем тот что рекомендованный и в следующей команде устанавливаем именно его)
 sudo apt install -y nvidia-driver-<версия>
 ```
@@ -46,7 +46,7 @@ wget https://developer.download.nvidia.com/compute/cuda/12.9.1/local_installers/
 cuda-repo-ubuntu2204-12-9-local_12.9.1-575.57.08-1_amd64.deb
 sudo dpkg -i cuda-repo-ubuntu2204-12-9-local_12.9.1-575.57.08-1_amd64.deb
 sudo cp /var/cuda-repo-ubuntu2204-12-9-local/cuda-*-keyring.gpg /usr/share/keyrings/
-sudo apt-get update
+sudo apt-get update -y
 ```
 
 #### Установка CUDA Toolkit
@@ -70,7 +70,35 @@ sudo source ~/.bashrc
 sudo nvcc --version
 ```
 
-### 3. Установка NVIDIA Container Toolkit
+### 3. Установка Docker
+
+#### Установка зависимостей
+```
+sudo apt-get update -y
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+```
+
+#### Добавление репозитория Docker
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+#### Установка Docker
+```
+sudo apt update -y
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
+```
+
+#### Запуск сервисов Docker
+```
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+### 4. Установка NVIDIA Container Toolkit
 
 #### Установка ключа и репозитория
 ```
@@ -87,7 +115,7 @@ sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-tool
 
 #### Установка NVIDIA Container Toolkit
 ```
-sudo apt update
+sudo apt update -y
 sudo apt install -y nvidia-container-toolkit
 ```
 
@@ -101,3 +129,13 @@ sudo systemctl restart docker
 ```
 sudo nvidia-container-cli info
 ```
+
+### 5. Установка Boundless
+
+#### Клонируем репозиторий
+```
+cd ~ && git clone https://github.com/boundless-xyz/boundless
+cd boundless
+git checkout release-0.13
+```
+
