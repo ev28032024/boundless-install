@@ -1,24 +1,24 @@
-# 1. Установка NVIDIA Drivers
+### 1. Установка NVIDIA Drivers
 
-# Удаление старого драйвера NVIDIA и пакеты CUDA
+#### Удаление старого драйвера NVIDIA и пакеты CUDA
 ```
 sudo apt-get remove --purge '^nvidia-.*' 'cuda-*' 'libcudnn*' && sudo apt-get autoremove && sudo apt-get autoclean
 sudo rm -rf /var/lib/dkms/nvidia /usr/local/cuda* /usr/src/nvidia* /usr/bin/nvidia*
 sudo ldconfig
 ```
 
-# Перезагрузка системы
+#### Перезагрузка системы
 ```
 sudo reboot
 ```
 
-# Установка зависимостей
+#### Установка зависимостей
 ```
 sudo apt-get update
 sudo apt-get install -y build-essential dkms linux-headers-$(uname -r)
 ```
 
-# Установка PPA и драйвера
+#### Установка PPA и драйвера
 ```
 sudo add-apt-repository ppa:graphics-drivers/ppa
 sudo apt update
@@ -26,19 +26,19 @@ ubuntu-drivers devices // (копируем тот что рекомендова
 sudo apt install -y nvidia-driver-<версия>
 ```
 
-# Перезагрузка системы
+#### Перезагрузка системы
 ```
 sudo reboot
 ```
 
-# Проверка загрузки драйвера
+#### Проверка загрузки драйвера
 ```
 sudo nvidia-smi
 ```
 
-# 2. Установка CUDA Toolkit
+### 2. Установка CUDA Toolkit
 
-# Добавление репозитория CUDA
+#### Добавление репозитория CUDA
 ```
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
@@ -49,28 +49,28 @@ sudo cp /var/cuda-repo-ubuntu2204-12-9-local/cuda-*-keyring.gpg /usr/share/keyri
 sudo apt-get update
 ```
 
-# Установка CUDA Toolkit
+#### Установка CUDA Toolkit
 ```
 sudo apt-get install -y cuda-toolkit-12-9
 ```
 
-# Переменные окружения (добавить строки в самый низ файла ~/.bashrc)
+#### Переменные окружения (добавить строки в самый низ файла ~/.bashrc)
 export PATH=${PATH}:/usr/local/cuda-12.9/bin
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.9/lib64
 
-# Импортировать настройки
+#### Импортировать настройки
 ```
 sudo source ~/.bashrc
 ```
 
-# Проверка nvcc
+#### Проверка nvcc
 ```
 sudo nvcc --version
 ```
 
-# 3. Установка NVIDIA Container Toolkit
+### 3. Установка NVIDIA Container Toolkit
 
-# Установка ключа и репозитория
+#### Установка ключа и репозитория
 ```
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
@@ -78,24 +78,24 @@ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dear
     sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 ```
 
-# Включаем эксперементальные пакеты
+#### Включаем эксперементальные пакеты
 ```
 sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
 ```
 
-# Установка NVIDIA Container Toolkit
+#### Установка NVIDIA Container Toolkit
 ```
 sudo apt update
 sudo apt install -y nvidia-container-toolkit
 ```
 
-# Настройка и перезапуск Docker
+#### Настройка и перезапуск Docker
 ```
 sudo nvidia-ctk runtime configure --runtime=docker
 sudo systemctl restart docker
 ```
 
-# Проверка установленного пакета
+#### Проверка установленного пакета
 ```
 sudo nvidia-container-cli info
 ```
