@@ -54,9 +54,11 @@ sudo apt-get update
 sudo apt-get install -y cuda-toolkit-12-9
 ```
 
-#### Переменные окружения (добавить строки в самый низ файла ~/.bashrc)
+#### Переменные окружения  --- (добавить строки в самый низ файла ~/.bashrc)
+```
 export PATH=${PATH}:/usr/local/cuda-12.9/bin
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.9/lib64
+```
 
 #### Импортировать настройки
 ```
