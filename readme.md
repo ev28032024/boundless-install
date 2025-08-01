@@ -33,7 +33,7 @@ sudo reboot
 
 #### Проверка загрузки драйвера
 ```
-sudo nvidia-smi
+nvidia-smi
 ```
 
 ### 2. Установка CUDA Toolkit
@@ -62,12 +62,12 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.9/lib64
 
 #### Импортировать настройки
 ```
-sudo source ~/.bashrc
+source ~/.bashrc
 ```
 
 #### Проверка nvcc
 ```
-sudo nvcc --version
+nvcc --version
 ```
 
 ### 3. Установка Docker
@@ -88,14 +88,20 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 #### Установка Docker
 ```
-sudo apt update -y
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
+sudo apt-get update -y
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose
 ```
 
 #### Запуск сервисов Docker
 ```
 sudo systemctl enable docker
 sudo systemctl start docker
+```
+
+#### Проверка установленного Docker
+```
+docker -v
+docker-compose -v
 ```
 
 ### 4. Установка NVIDIA Container Toolkit
@@ -115,8 +121,13 @@ sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-tool
 
 #### Установка NVIDIA Container Toolkit
 ```
-sudo apt update -y
-sudo apt install -y nvidia-container-toolkit
+sudo apt-get update -y
+export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.17.8-1
+  sudo apt-get install -y \
+      nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      libnvidia-container-tools=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \
+      libnvidia-container1=${NVIDIA_CONTAINER_TOOLKIT_VERSION}
 ```
 
 #### Настройка и перезапуск Docker
@@ -127,10 +138,16 @@ sudo systemctl restart docker
 
 #### Проверка установленного пакета
 ```
-sudo nvidia-container-cli info
+nvidia-container-cli info
 ```
 
 ### 5. Установка Boundless
+
+#### Установка зависимостей
+```
+sudo apt update -y && sudo apt upgrade -y
+sudo apt install curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli libgbm1 pkg-config libssl-dev tar clang bsdmainutils ncdu unzip libleveldb-dev libclang-dev ninja-build -y
+```
 
 #### Клонируем репозиторий
 ```
@@ -139,3 +156,87 @@ cd boundless
 git checkout release-0.13
 ```
 
+#### Установить rustup
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+. "$HOME/.cargo/env"
+```
+
+#### Обновить rustup
+```
+rustup update
+```
+
+#### Установить инструменты Rust
+```
+sudo apt update
+sudo apt install -y cargo
+```
+
+#### Проверить версию Cargo
+```
+cargo --version
+```
+
+#### Установить rzup
+```
+curl -L https://risczero.com/install | bash
+source ~/.bashrc
+```
+
+#### Проверить rzup
+```
+rzup --version
+```
+
+#### Установить RISC Zero Rust Toolchain
+```
+rzup install rust
+```
+
+#### Установить cargo-risczero
+```
+cargo install cargo-risczero
+rzup install cargo-risczero
+```
+
+#### Повторно обновить rustup (на всякий случай)
+```
+rustup update
+```
+
+#### Установить Bento-клиент
+```
+cargo install --locked --git https://github.com/risc0/risc0 bento-client --branch release-2.3 --bin bento_cli
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+#### Проверить Bento-клиент
+```
+bento_cli --version
+```
+
+#### Установить Boundless CLI (версия 13)
+```
+cargo install --locked boundless-cli
+export PATH=$PATH:/root/.cargo/bin
+source ~/.bashrc
+```
+
+#### Проверить boundless-cli
+```
+boundless -h
+```
+
+#### Установить Just (утилита для управления задачами)
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source "$HOME/.cargo/env"
+cargo install just
+```
+
+#### Проверить Just
+```
+just --version
+```
