@@ -243,3 +243,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | sudo bash
 ```
 just --version
 ```
+
+### 6. Включение перераспределения памяти (memory overcommit) в Linux
+>Чтобы предотвратить сбои приложений (например, провера) при высокой нагрузке на память, рекомендуется включить перераспределение памяти, позволяющее системе выделять больше памяти, чем физически доступно.
+```
+grep -q '^vm.overcommit_memory=' /etc/sysctl.conf && sudo sed -i 's/^vm.overcommit_memory=.*/vm.overcommit_memory=1/' /etc/sysctl.conf || echo 'vm.overcommit_memory=1' | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
